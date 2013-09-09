@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *author;
+@property (nonatomic, strong) NSDate *date;
 
 + (NSString*)RESTPath;
 + (NSString*)jsonObjectKeyPath;

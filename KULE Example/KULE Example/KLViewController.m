@@ -12,7 +12,7 @@
 
 @interface KLViewController ()
 
-@property (nonatomic, strong) NSArray *tasks;
+@property (nonatomic, strong) NSMutableArray *tasks;
 
 @end
 
@@ -24,10 +24,10 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [RDB sharedDB].url = [NSURL URLWithString:@"http://localhost:8000"];
     [KLTask allWithCompletionBlock:^(id object, id metadata, NSError *error) {
-        self.tasks = object;
+        self.tasks = [object mutableCopy];
         [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     }];
-    
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,10 +45,15 @@
         [newTask updateWithCompletionBlock:^(id object, id metadata, NSError *error) {
             self.textField.enabled = YES;
             self.textField.text = @"";
-            self.tasks = [self.tasks arrayByAddingObject:newTask];
+            [self.tasks addObject:newTask];
             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
         }];
     }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
 }
 
 #pragma mark - TableView Delegate and Datasource
@@ -71,6 +76,15 @@
     cell.textLabel.text = task.name;
     cell.detailTextLabel.text = task.author;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        KLTask *task = [self.tasks objectAtIndex:indexPath.row];
+        [self.tasks removeObject:task];
+        [task remove];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 @end

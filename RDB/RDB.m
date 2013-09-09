@@ -23,6 +23,7 @@
 @interface RDB ()
 
 @property (nonatomic) AFHTTPClient *client;
+@property (atomic) NSInteger networkActivityRetainCount;
 
 @end
 
@@ -138,6 +139,22 @@ static RDB *sharedDB;
     return _client;
 }
 
+#pragma mark - Network Activity Management
+
+- (void)retainNetworkActivity {
+    self.networkActivityRetainCount ++;
+    [self updateNetworkActivity];
+}
+
+- (void)releaseNetworkActivity {
+    self.networkActivityRetainCount --;
+    [self updateNetworkActivity];
+}
+
+- (void)updateNetworkActivity {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = (self.networkActivityRetainCount > 0);
+}
+
 #pragma mark - API Request Methods
 
 - (NSMutableURLRequest*)requestWithMethod:(NSString*)method andPath:(NSString*)path andParameters:(id)parameters {
@@ -158,20 +175,24 @@ static RDB *sharedDB;
 
 - (void)objectOfClass:(Class)type withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock {
     NSMutableURLRequest *request = [self requestWithMethod:self.HTTPMethodObjectGet andPath:[self RESTPathOfObjectWithClass:type andObjectID:objectID] andParameters:nil];
+    [self retainNetworkActivity];
     AFJSONRequestOperation *requestOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         if (completionBlock) {
             completionBlock([self createInstanceOfClass:type withDictionary:[self dictionaryRepresentationOfObjectWithClass:type fromResponse:JSON]], [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (completionBlock) {
             completionBlock(nil, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     }];
     [requestOperation start];
 }
 
 - (void)objectsOfClass:(Class)type withCompletionBlock:(RDBCompletionBlock)completionBlock {
     NSMutableURLRequest *request = [self requestWithMethod:self.HTTPMethodObjectGet andPath:[self RESTPathOfObjectsWithClass:type] andParameters:nil];
+    [self retainNetworkActivity];
     AFJSONRequestOperation *requestOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         if (completionBlock) {
             NSArray *representations = [self dictionaryRepresentationOfObjectsWithClass:type fromResponse:JSON];
@@ -181,10 +202,12 @@ static RDB *sharedDB;
             }
             completionBlock(objects, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (completionBlock) {
             completionBlock(nil, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     }];
     [requestOperation start];
 }
@@ -201,6 +224,7 @@ static RDB *sharedDB;
     } else { // if there is no ID, we would like to create one
         request = [self requestWithMethod:self.HTTPMethodObjectCreate andPath:[self RESTPathOfObjectsWithClass:[object class]] andParameters:objectRepresentation];
     }
+    [self retainNetworkActivity];
     AFJSONRequestOperation *requestOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         if (JSON) {
             [self pathObject:object withDictionary:[self dictionaryRepresentationOfObjectWithClass:[object class] fromResponse:JSON]];
@@ -208,10 +232,12 @@ static RDB *sharedDB;
         if (completionBlock) {
             completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (completionBlock) {
             completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
         }
+        [self releaseNetworkActivity];
     }];
     [requestOperation start];
 }
@@ -223,14 +249,17 @@ static RDB *sharedDB;
 - (void)removeObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
     if (object._id) {
         NSMutableURLRequest *request = [self requestWithMethod:self.HTTPMethodObjectRemove andPath:[self RESTPathOfObject:object] andParameters:nil];
+        [self retainNetworkActivity];
         AFJSONRequestOperation *requestOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             if (completionBlock) {
                 completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
             }
+            [self releaseNetworkActivity];
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             if (completionBlock) {
                 completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
             }
+            [self releaseNetworkActivity];
         }];
         [requestOperation start];
     } else {
