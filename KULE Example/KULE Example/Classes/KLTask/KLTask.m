@@ -24,7 +24,8 @@
 
 + (NSDictionary*)jsonKeyPathToAttributesMapping {
     return @{@"name":@"name",
-             @"author":@"author"};
+             @"author":@"author",
+             @"date":@"date"};
 }
 
 + (RDBObjectCachePolicy)cachePolicy {

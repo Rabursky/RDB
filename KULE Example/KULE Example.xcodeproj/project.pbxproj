@@ -27,9 +27,6 @@
 		E832342617D7B52200A89301 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E832342517D7B52200A89301 /* MobileCoreServices.framework */; };
 		E832342817D7B52E00A89301 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E832342717D7B52E00A89301 /* Security.framework */; };
 		E832342C17D7B6C300A89301 /* KLTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E832342B17D7B6C300A89301 /* KLTask.m */; };
-		E832342D17D7B8D100A89301 /* NSObject+NSValueCodingWithNil.m in Sources */ = {isa = PBXBuildFile; fileRef = E832341D17D7B48A00A89301 /* NSObject+NSValueCodingWithNil.m */; };
-		E832342E17D7B8D100A89301 /* RDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E832341F17D7B48A00A89301 /* RDB.m */; };
-		E832342F17D7B8D100A89301 /* RDBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E832342117D7B48A00A89301 /* RDBObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +42,16 @@
 /* Begin PBXFileReference section */
 		50E26488DDDE41F79F44CC23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D937D0625AFF4010A1CEDD28 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		E820715917DE6EC100DAB3C0 /* NSDate+JSONProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "NSDate+JSONProtocol.h"; sourceTree = "<group>"; };
+		E820715A17DE6EC100DAB3C0 /* NSDate+JSONProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+JSONProtocol.m"; sourceTree = "<group>"; };
+		E820715B17DE6EC100DAB3C0 /* NSObject+NSValueCodingWithNil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "NSObject+NSValueCodingWithNil.h"; sourceTree = "<group>"; };
+		E820715C17DE6EC100DAB3C0 /* NSObject+NSValueCodingWithNil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+NSValueCodingWithNil.m"; sourceTree = "<group>"; };
+		E820715E17DE6EC100DAB3C0 /* RDBObjectJSONProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = RDBObjectJSONProtocol.h; sourceTree = "<group>"; };
+		E820715F17DE6EC100DAB3C0 /* RDBObjectProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = RDBObjectProtocol.h; sourceTree = "<group>"; };
+		E820716017DE6EC100DAB3C0 /* RDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = RDB.h; sourceTree = "<group>"; };
+		E820716117DE6EC100DAB3C0 /* RDB.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RDB.m; sourceTree = "<group>"; };
+		E820716217DE6EC100DAB3C0 /* RDBObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = RDBObject.h; sourceTree = "<group>"; };
+		E820716317DE6EC100DAB3C0 /* RDBObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RDBObject.m; sourceTree = "<group>"; };
 		E83233E017D7B47600A89301 /* KULE Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KULE Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E83233E317D7B47600A89301 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E83233E517D7B47600A89301 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -65,13 +72,6 @@
 		E832340D17D7B47600A89301 /* KULE ExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KULE ExampleTests-Info.plist"; sourceTree = "<group>"; };
 		E832340F17D7B47600A89301 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E832341117D7B47600A89301 /* KULE_ExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KULE_ExampleTests.m; sourceTree = "<group>"; };
-		E832341C17D7B48A00A89301 /* NSObject+NSValueCodingWithNil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+NSValueCodingWithNil.h"; sourceTree = "<group>"; };
-		E832341D17D7B48A00A89301 /* NSObject+NSValueCodingWithNil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+NSValueCodingWithNil.m"; sourceTree = "<group>"; };
-		E832341E17D7B48A00A89301 /* RDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RDB.h; sourceTree = "<group>"; };
-		E832341F17D7B48A00A89301 /* RDB.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RDB.m; sourceTree = "<group>"; };
-		E832342017D7B48A00A89301 /* RDBObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RDBObject.h; sourceTree = "<group>"; };
-		E832342117D7B48A00A89301 /* RDBObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RDBObject.m; sourceTree = "<group>"; };
-		E832342217D7B48A00A89301 /* RDBObjectProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RDBObjectProtocol.h; sourceTree = "<group>"; };
 		E832342317D7B51A00A89301 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		E832342517D7B52200A89301 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		E832342717D7B52E00A89301 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -107,6 +107,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E820715717DE6EC100DAB3C0 /* RDB */ = {
+			isa = PBXGroup;
+			children = (
+				E820715817DE6EC100DAB3C0 /* Categories */,
+				E820715D17DE6EC100DAB3C0 /* Protocols */,
+				E820716017DE6EC100DAB3C0 /* RDB.h */,
+				E820716117DE6EC100DAB3C0 /* RDB.m */,
+				E820716217DE6EC100DAB3C0 /* RDBObject.h */,
+				E820716317DE6EC100DAB3C0 /* RDBObject.m */,
+			);
+			name = RDB;
+			path = ../../RDB;
+			sourceTree = "<group>";
+		};
+		E820715817DE6EC100DAB3C0 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E820715917DE6EC100DAB3C0 /* NSDate+JSONProtocol.h */,
+				E820715A17DE6EC100DAB3C0 /* NSDate+JSONProtocol.m */,
+				E820715B17DE6EC100DAB3C0 /* NSObject+NSValueCodingWithNil.h */,
+				E820715C17DE6EC100DAB3C0 /* NSObject+NSValueCodingWithNil.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		E820715D17DE6EC100DAB3C0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E820715E17DE6EC100DAB3C0 /* RDBObjectJSONProtocol.h */,
+				E820715F17DE6EC100DAB3C0 /* RDBObjectProtocol.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		E83233D717D7B47500A89301 = {
 			isa = PBXGroup;
 			children = (
@@ -145,8 +179,8 @@
 		E83233E917D7B47600A89301 /* KULE Example */ = {
 			isa = PBXGroup;
 			children = (
+				E820715717DE6EC100DAB3C0 /* RDB */,
 				E832342917D7B6A300A89301 /* RDBModels */,
-				E832341B17D7B48A00A89301 /* RDB */,
 				E83233F217D7B47600A89301 /* KLAppDelegate.h */,
 				E83233F317D7B47600A89301 /* KLAppDelegate.m */,
 				E83233F517D7B47600A89301 /* Main_iPhone.storyboard */,
@@ -186,21 +220,6 @@
 				E832340E17D7B47600A89301 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E832341B17D7B48A00A89301 /* RDB */ = {
-			isa = PBXGroup;
-			children = (
-				E832341C17D7B48A00A89301 /* NSObject+NSValueCodingWithNil.h */,
-				E832341D17D7B48A00A89301 /* NSObject+NSValueCodingWithNil.m */,
-				E832341E17D7B48A00A89301 /* RDB.h */,
-				E832341F17D7B48A00A89301 /* RDB.m */,
-				E832342017D7B48A00A89301 /* RDBObject.h */,
-				E832342117D7B48A00A89301 /* RDBObject.m */,
-				E832342217D7B48A00A89301 /* RDBObjectProtocol.h */,
-			);
-			name = RDB;
-			path = ../../RDB;
 			sourceTree = "<group>";
 		};
 		E832342917D7B6A300A89301 /* RDBModels */ = {
@@ -346,9 +365,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E832342D17D7B8D100A89301 /* NSObject+NSValueCodingWithNil.m in Sources */,
-				E832342E17D7B8D100A89301 /* RDB.m in Sources */,
-				E832342F17D7B8D100A89301 /* RDBObject.m in Sources */,
 				E83233FD17D7B47600A89301 /* KLViewController.m in Sources */,
 				E832342C17D7B6C300A89301 /* KLTask.m in Sources */,
 				E83233F017D7B47600A89301 /* main.m in Sources */,

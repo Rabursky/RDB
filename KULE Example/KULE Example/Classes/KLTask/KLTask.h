@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RDBObject.h"
+#import "NSDate+JSONProtocol.h"
 
 @interface KLTask : RDBObject
 

@@ -42,6 +42,7 @@
         KLTask *newTask = [[KLTask alloc] init];
         newTask.name = self.textField.text;
         newTask.author = @"Me";
+        newTask.date = [NSDate date];
         [newTask updateWithCompletionBlock:^(id object, id metadata, NSError *error) {
             self.textField.enabled = YES;
             self.textField.text = @"";
@@ -74,7 +75,7 @@
     }
     KLTask *task = [self.tasks objectAtIndex:indexPath.row];
     cell.textLabel.text = task.name;
-    cell.detailTextLabel.text = task.author;
+    cell.detailTextLabel.text = task.date.description;
     return cell;
 }
 

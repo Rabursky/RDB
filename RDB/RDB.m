@@ -376,7 +376,7 @@ static RDB *sharedDB;
     id object = nil;
     if ([class conformsToProtocol:@protocol(RDBObjectProtocol)]) {
         object = [self createInstanceOfClass:class withDictionary:value];
-    } else if ([class conformsToProtocol:@protocol(RDBObjectJSONProtocol)]) {
+    } else if ([class respondsToSelector:@selector(objectWithJSONValue:)]) { // conforms to protocol RDBObjectJSONProtocol
         object = [class objectWithJSONValue:value];
     } else {
         object = value;
@@ -392,7 +392,7 @@ static RDB *sharedDB;
         object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
             return [self JSONValueFromObject:innerObject];
         }];
-    } else if ([value conformsToProtocol:@protocol(RDBObjectJSONProtocol)])
+    } else if ([value respondsToSelector:@selector(JSONValue)]) // conforms to protocol RDBObjectJSONProtocol
     {
         object = [value JSONValue];
     }
