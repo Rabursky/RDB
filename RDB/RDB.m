@@ -8,6 +8,8 @@
 
 #import "RDB.h"
 #import "NSObject+NSValueCodingWithNil.h"
+#import "RDBObjectJSONProtocol.h"
+#import "objc-runtime.h"
 
 #define HTTP_METHOD_PUT @"PUT"
 #define HTTP_METHOD_GET @"GET"
@@ -281,7 +283,12 @@ static RDB *sharedDB;
         NSString *property = [attributes objectForKey:keypath];
         id value = [object valueForKeyPathWithNil:property];
         if (value) {
-            [dict setObject:value forKey:keypath];
+            id object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
+                return [self JSONValueFromObject:innerObject];
+            }];
+            if (object) {
+                [dict setObject:object forKey:keypath];
+            }
         }
     }
     return dict;
@@ -289,16 +296,88 @@ static RDB *sharedDB;
 
 - (void)pathObject:(id)instance withDictionary:(NSDictionary*)dict {
     NSDictionary *attributes = [[instance class] jsonKeyPathToAttributesMapping];
+    NSDictionary *classes = nil;
+    if ([[instance class] respondsToSelector:@selector(jsonKeyPathToClassMapping)]) {
+        classes = [[instance class] jsonKeyPathToClassMapping];
+    }
     if ([dict.allKeys containsObject:@"_id"]) {
         [instance updateID:[dict objectForKey:@"_id"]];
     }
     for (NSString *keypath in attributes.allKeys) {
         id value = [dict valueForKeyPathWithNil:keypath];
         NSString *property = [attributes objectForKey:keypath];
+        Class class = Nil;
+        if ([classes.allKeys containsObject:keypath]) {
+            class = [classes objectForKey:keypath];
+        } else {
+            class = NSClassFromString([self classNamePropertyWithName:property atClass:[instance class]]);
+        }
         if (value && property) {
-            [instance setValue:value forKeyPath:property];
+            id object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
+                return [self objectFromJSONValue:innerObject andObjectClass:class];
+            }];
+            if (object) {
+                [instance setValue:object forKeyPath:property];
+            }
         }
     }
+}
+
+// replaces objects in either NSArray, NSDictionary or stand-alone
+- (id)replaceObjectsInObject:(id)value withReplaceBlock:(RDBReplaceBlock)replaceBlock {
+    id object = nil;
+    if ([value isKindOfClass:[NSArray class]]) {
+        object = [[NSMutableArray alloc] init];
+        for (id obj in value) {
+            [object addObject:replaceBlock(obj)];
+        }
+    } else
+    if ([value isKindOfClass:[NSDictionary class]]) {
+        object = [[NSMutableDictionary alloc] init];
+        for (id key in [value allKeys]) {
+            [object setObject:replaceBlock([value objectForKey:key]) forKey:key];
+        }
+    } else {
+        object = replaceBlock(value);
+    }
+    return object;
+}
+
+- (id)objectFromJSONValue:(id)value andObjectClass:(Class)class {
+    id object = nil;
+    if ([class conformsToProtocol:@protocol(RDBObjectProtocol)]) {
+        object = [self createInstanceOfClass:class withDictionary:value];
+    } else if ([class conformsToProtocol:@protocol(RDBObjectJSONProtocol)]) {
+        object = [class objectWithJSONValue:value];
+    } else {
+        object = value;
+    }
+    return object;
+}
+
+- (id)JSONValueFromObject:(id)value {
+    id object = value;
+    if ([value conformsToProtocol:@protocol(RDBObjectProtocol)]) {
+        object = [self dictionaryRepresentationOfObject:value];
+    } else if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]]) {
+        object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
+            return [self JSONValueFromObject:innerObject];
+        }];
+    } else if ([value conformsToProtocol:@protocol(RDBObjectJSONProtocol)])
+    {
+        object = [value JSONValue];
+    }
+    return object;
+}
+
+- (NSString*)classNamePropertyWithName:(NSString*)name atClass:(Class)type {
+    objc_property_t property = class_getProperty(type, [name UTF8String]);
+    NSString* propertyAttributes = [NSString stringWithUTF8String:property_getAttributes(property)];
+    NSArray* splitPropertyAttributes = [propertyAttributes componentsSeparatedByString:@"\""];
+    if ([splitPropertyAttributes count] >= 2) {
+        return [splitPropertyAttributes objectAtIndex:1];
+    }
+    return nil;
 }
 
 - (NSError*)errorWithError:(NSError*)error andJSON:(NSDictionary*)JSON {

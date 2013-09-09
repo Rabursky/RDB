@@ -16,11 +16,18 @@ typedef enum {
 
 @protocol RDBObjectProtocol <NSObject>
 
+@required;
 + (NSString*)RESTPath;
 + (NSString*)jsonObjectKeyPath;
 + (NSString*)jsonObjectsKeyPath;
 + (NSDictionary*)jsonKeyPathToAttributesMapping;
+
+@optional;
+// if some objects are in the array
+// we have to define what kind of objects should it be
++ (NSDictionary*)jsonKeyPathToClassMapping;
 + (RDBObjectCachePolicy)cachePolicy;
+
 
 - (instancetype)initWithID:(NSString*)uniqueID;
 - (NSString*)_id;

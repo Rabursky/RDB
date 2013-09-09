@@ -12,6 +12,7 @@
 
 
 typedef void (^RDBCompletionBlock)(id object, id metadata, NSError* error); // object, metadata, error
+typedef id (^RDBReplaceBlock)(id object); // object, metadata, error
 
 @interface RDB : NSObject
 
