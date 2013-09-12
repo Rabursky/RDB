@@ -48,12 +48,12 @@ static RDB *sharedDB;
     [[self sharedDB] objectsOfClass:type withCompletionBlock:completionBlock];
 }
 
-+ (void)updateObject:(id)object {
-    [[self sharedDB] updateObject:object];
++ (void)saveObject:(id)object {
+    [[self sharedDB] saveObject:object];
 }
 
-+ (void)updateObject:(id)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
-    [[self sharedDB] updateObject:object withCompletionBlock:completionBlock];
++ (void)saveObject:(id)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
+    [[self sharedDB] saveObject:object withCompletionBlock:completionBlock];
 }
 
 + (void)removeObject:(id<RDBObjectProtocol>)object {
@@ -212,11 +212,11 @@ static RDB *sharedDB;
     [requestOperation start];
 }
 
-- (void)updateObject:(id<RDBObjectProtocol>)object {
-    [self updateObject:object withCompletionBlock:nil];
+- (void)saveObject:(id<RDBObjectProtocol>)object {
+    [self saveObject:object withCompletionBlock:nil];
 }
 
-- (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
+- (void)saveObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
     NSDictionary *objectRepresentation = [self dictionaryRepresentationOfObject:object];
     NSMutableURLRequest *request;
     if (object._id) { // if there is ID, we would like to update the object
@@ -359,12 +359,6 @@ static RDB *sharedDB;
         object = [[NSMutableArray alloc] init];
         for (id obj in value) {
             [object addObject:replaceBlock(obj)];
-        }
-    } else
-    if ([value isKindOfClass:[NSDictionary class]]) {
-        object = [[NSMutableDictionary alloc] init];
-        for (id key in [value allKeys]) {
-            [object setObject:replaceBlock([value objectForKey:key]) forKey:key];
         }
     } else {
         object = replaceBlock(value);

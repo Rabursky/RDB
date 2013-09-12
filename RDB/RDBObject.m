@@ -35,12 +35,12 @@
 }
 
 // Updates an object or creates new when ones has no _id
-- (void)update {
-    [[[self class] db] updateObject:self];
+- (void)save {
+    [[[self class] db] saveObject:self];
 }
 
-- (void)updateWithCompletionBlock:(RDBCompletionBlock)completionBlock {
-    [[[self class] db] updateObject:self withCompletionBlock:completionBlock];
+- (void)saveWithCompletionBlock:(RDBCompletionBlock)completionBlock {
+    [[[self class] db] saveObject:self withCompletionBlock:completionBlock];
 }
 
 // Removes object from RDB

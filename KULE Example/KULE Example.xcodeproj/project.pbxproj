@@ -27,6 +27,10 @@
 		E832342617D7B52200A89301 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E832342517D7B52200A89301 /* MobileCoreServices.framework */; };
 		E832342817D7B52E00A89301 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E832342717D7B52E00A89301 /* Security.framework */; };
 		E832342C17D7B6C300A89301 /* KLTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E832342B17D7B6C300A89301 /* KLTask.m */; };
+		E856D09817E25C0900B0EE97 /* NSDate+JSONProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E820715A17DE6EC100DAB3C0 /* NSDate+JSONProtocol.m */; };
+		E856D09917E25C0900B0EE97 /* NSObject+NSValueCodingWithNil.m in Sources */ = {isa = PBXBuildFile; fileRef = E820715C17DE6EC100DAB3C0 /* NSObject+NSValueCodingWithNil.m */; };
+		E856D09A17E25C0900B0EE97 /* RDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E820716117DE6EC100DAB3C0 /* RDB.m */; };
+		E856D09B17E25C0900B0EE97 /* RDBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E820716317DE6EC100DAB3C0 /* RDBObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -365,6 +369,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E856D09817E25C0900B0EE97 /* NSDate+JSONProtocol.m in Sources */,
+				E856D09917E25C0900B0EE97 /* NSObject+NSValueCodingWithNil.m in Sources */,
+				E856D09A17E25C0900B0EE97 /* RDB.m in Sources */,
+				E856D09B17E25C0900B0EE97 /* RDBObject.m in Sources */,
 				E83233FD17D7B47600A89301 /* KLViewController.m in Sources */,
 				E832342C17D7B6C300A89301 /* KLTask.m in Sources */,
 				E83233F017D7B47600A89301 /* main.m in Sources */,

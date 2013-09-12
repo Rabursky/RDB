@@ -44,15 +44,15 @@ typedef id (^RDBReplaceBlock)(id object); // object, metadata, error
 + (instancetype)sharedDB;
 + (void)objectOfClass:(Class<RDBObjectProtocol>)type withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock;
 + (void)objectsOfClass:(Class<RDBObjectProtocol>)type withCompletionBlock:(RDBCompletionBlock)completionBlock;
-+ (void)updateObject:(id<RDBObjectProtocol>)object;
-+ (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
++ (void)saveObject:(id<RDBObjectProtocol>)object;
++ (void)saveObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 + (void)removeObject:(id<RDBObjectProtocol>)object;
 + (void)removeObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 
 - (void)objectOfClass:(Class<RDBObjectProtocol>)type withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock;
 - (void)objectsOfClass:(Class<RDBObjectProtocol>)type withCompletionBlock:(RDBCompletionBlock)completionBlock;
-- (void)updateObject:(id<RDBObjectProtocol>)object;
-- (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
+- (void)saveObject:(id<RDBObjectProtocol>)object;
+- (void)saveObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 - (void)removeObject:(id<RDBObjectProtocol>)object;
 - (void)removeObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 

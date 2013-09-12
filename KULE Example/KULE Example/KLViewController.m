@@ -43,7 +43,7 @@
         newTask.name = self.textField.text;
         newTask.author = @"Me";
         newTask.date = [NSDate date];
-        [newTask updateWithCompletionBlock:^(id object, id metadata, NSError *error) {
+        [newTask saveWithCompletionBlock:^(id object, id metadata, NSError *error) {
             self.textField.enabled = YES;
             self.textField.text = @"";
             [self.tasks addObject:newTask];

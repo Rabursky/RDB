@@ -28,8 +28,8 @@
 - (instancetype)initWithID:(NSString*)uniqueID;
 
 // Updates an object or creates new when ones has no _id
-- (void)update;
-- (void)updateWithCompletionBlock:(RDBCompletionBlock)completionBlock;
+- (void)save;
+- (void)saveWithCompletionBlock:(RDBCompletionBlock)completionBlock;
 
 // Removes object from RDB
 - (void)remove;
