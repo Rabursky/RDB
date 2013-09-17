@@ -13,29 +13,42 @@
 
 typedef void (^RDBCompletionBlock)(id object, id metadata, NSError* error); // object, metadata, error
 typedef id (^RDBReplaceBlock)(id object); // object, metadata, error
+typedef void (^RDBHTTPRequestFailureBlock)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON);
+
+@class RDB;
+
+@protocol RDBErrorDelegate <NSObject>
+
+- (void)RDB:(RDB*)rdb didFinishRequestWithError:(NSError*)error metadata:(id)metadata object:(id)object andRetryInvocation:(NSInvocation*)invocation;
+
+@end
 
 @interface RDB : NSObject
 
 // Just BASE URL like "127.0.0.1", without /v1
-@property (nonatomic) NSURL *url;
+@property (nonatomic, retain) NSURL *url;
 
 // If you have API v1, user urlPostfix as @"/v1"
-@property (nonatomic) NSString *urlPostfix;
+@property (nonatomic, retain) NSString *urlPostfix;
 
 // preconfigured for Kule
-@property (nonatomic) NSString *jsonMetaKeyPath; // no object at keyPath = no meta
-@property (nonatomic) NSString *jsonObjectKeyPath; // keyPath for object at eg /users/id
-@property (nonatomic) NSString *jsonObjectsKeyPath; // keyPath for objects at eg /users
-@property (nonatomic) NSString *jsonResponseCodeKeyPath; // code != 2xx => error
-@property (nonatomic) NSString *jsonErrorMessageKeyPath; // added to NSError along with errorCode
+@property (nonatomic, retain) NSString *jsonMetaKeyPath; // no object at keyPath = no meta
+@property (nonatomic, retain) NSString *jsonObjectKeyPath; // keyPath for object at eg /users/id
+@property (nonatomic, retain) NSString *jsonObjectsKeyPath; // keyPath for objects at eg /users
+@property (nonatomic, retain) NSString *jsonResponseCodeKeyPath; // code != 2xx => error
+@property (nonatomic, retain) NSString *jsonErrorMessageKeyPath; // added to NSError along with errorCode
 
-@property (nonatomic) NSString *HTTPMethodObjectGet; // by default: GET
-@property (nonatomic) NSString *HTTPMethodObjectUpdate; // by default: PATCH
-@property (nonatomic) NSString *HTTPMethodObjectRemove; // by default: DELETE
-@property (nonatomic) NSString *HTTPMethodObjectCreate; // by default: POST
+@property (nonatomic, retain) NSString *HTTPMethodObjectGet; // by default: GET
+@property (nonatomic, retain) NSString *HTTPMethodObjectUpdate; // by default: PATCH
+@property (nonatomic, retain) NSString *HTTPMethodObjectRemove; // by default: DELETE
+@property (nonatomic, retain) NSString *HTTPMethodObjectCreate; // by default: POST
 
 // custom HTTP Headers will be added to each request
-@property (nonatomic) NSDictionary *HTTPHeaders;
+@property (nonatomic, retain) NSDictionary *HTTPHeaders;
+
+// if error occurs, it is posted as argument in completion block
+// and also passed to this delegate
+@property (nonatomic, assign) id <RDBErrorDelegate> errorDelegate;
 
 // metadata returned by the API can be returned as object instead of dictionary
 // it is normal RDBObject, but cant be updated or removed

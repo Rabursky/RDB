@@ -181,12 +181,7 @@ static RDB *sharedDB;
             completionBlock([self createInstanceOfClass:type withDictionary:[self dictionaryRepresentationOfObjectWithClass:type fromResponse:JSON]], [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
         [self releaseNetworkActivity];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (completionBlock) {
-            completionBlock(nil, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
-        }
-        [self releaseNetworkActivity];
-    }];
+    } failure:[self failureBlockWithObject:type completionBlock:completionBlock methodSelector:@selector(objectOfClass:withID:withCompletionBlock:)]];
     [requestOperation start];
 }
 
@@ -203,12 +198,7 @@ static RDB *sharedDB;
             completionBlock(objects, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
         [self releaseNetworkActivity];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (completionBlock) {
-            completionBlock(nil, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
-        }
-        [self releaseNetworkActivity];
-    }];
+    } failure:[self failureBlockWithObject:type completionBlock:completionBlock methodSelector:@selector(objectsOfClass:withID:withCompletionBlock:)]];
     [requestOperation start];
 }
 
@@ -233,12 +223,7 @@ static RDB *sharedDB;
             completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
         [self releaseNetworkActivity];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (completionBlock) {
-            completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
-        }
-        [self releaseNetworkActivity];
-    }];
+    } failure:[self failureBlockWithObject:object completionBlock:completionBlock methodSelector:@selector(saveObject:withCompletionBlock:)]];
     [requestOperation start];
 }
 
@@ -255,18 +240,33 @@ static RDB *sharedDB;
                 completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
             }
             [self releaseNetworkActivity];
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            if (completionBlock) {
-                completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
-            }
-            [self releaseNetworkActivity];
-        }];
+        } failure:[self failureBlockWithObject:object completionBlock:completionBlock methodSelector:@selector(removeObject:withCompletionBlock:)]];
         [requestOperation start];
     } else {
         if (completionBlock) {
             completionBlock(object, nil, [NSError errorWithDomain:@"local" code:RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_CODE userInfo:@{NSLocalizedDescriptionKey:RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_MESSAGE}]);
         }
     }
+}
+
+- (RDBHTTPRequestFailureBlock)failureBlockWithObject:(id)object completionBlock:(RDBCompletionBlock)completionBlock methodSelector:(SEL)methodSelector {
+    return ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (completionBlock) {
+            completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:error andJSON:JSON]);
+        }
+        if ([self.errorDelegate respondsToSelector:@selector(RDB:didFinishRequestWithError:metadata:object:andRetryInvocation:)]) {
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[RDB instanceMethodSignatureForSelector:methodSelector]];
+            [invocation setTarget:self];
+            [invocation setSelector:methodSelector];
+            id invokeObject = object;
+            id invokeBlock = completionBlock;
+            [invocation setArgument:&invokeObject atIndex:2];
+            [invocation setArgument:&invokeBlock atIndex:3];
+            [invocation retainArguments];
+            [self.errorDelegate RDB:self didFinishRequestWithError:[self errorWithError:error andJSON:JSON] metadata:[self metadataWithJSON:JSON] object:object andRetryInvocation:invocation];
+        }
+        [self releaseNetworkActivity];
+    };
 }
 
 #pragma mark  - Helper methods
