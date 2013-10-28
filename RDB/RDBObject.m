@@ -7,11 +7,17 @@
 //
 
 #import "RDBObject.h"
+#import "RDBObjectRefFactory.h"
 
 @implementation RDBObject
 
 + (RDB*)db {
     return [RDB sharedDB];
+}
+
++ (Class)classRef {
+    // Know it aint beutiful.
+    return [RDBObjectRefFactory objectFactoryWithClass:[self class]];
 }
 
 + (void)withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock {
@@ -22,8 +28,16 @@
     [[self db] objectsOfClass:self withCompletionBlock:completionBlock];
 }
 
-- (instancetype)initWithID:(NSString*)uniqueID {
+- (instancetype)init {
     self = [super init];
+    if (self) {
+        self.ref = NO;
+    }
+    return self;
+}
+
+- (instancetype)initWithID:(NSString*)uniqueID {
+    self = [self init];
     if (self) {
         self._id = uniqueID;
     }
@@ -50,6 +64,10 @@
 
 - (void)removeWithCompletionBlock:(RDBCompletionBlock)completionBlock {
     [[[self class] db] removeObject:self withCompletionBlock:completionBlock];
+}
+
+- (void)getWithCompletionBlock:(RDBCompletionBlock)completionBlock {
+    [[[self class] db] updateObject:self withCompletionBlock:completionBlock];
 }
 
 @end

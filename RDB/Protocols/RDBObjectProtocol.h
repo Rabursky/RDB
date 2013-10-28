@@ -31,6 +31,7 @@ typedef enum {
 
 - (instancetype)initWithID:(NSString*)uniqueID;
 - (NSString*)_id;
+- (BOOL)isRef;
 - (void)updateID:(NSString*)uniqueID;
 
 @end

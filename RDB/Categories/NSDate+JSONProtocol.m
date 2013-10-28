@@ -15,6 +15,10 @@
     if (value) {
         if ([value isKindOfClass:[NSNumber class]]) {
             object = [[NSDate alloc] initWithTimeIntervalSince1970:[value doubleValue]];
+        } else if([value isKindOfClass:[NSString class]]) {
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+            object = [df dateFromString:value];
         }
     } else {
         return nil;

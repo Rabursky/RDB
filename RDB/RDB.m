@@ -9,7 +9,9 @@
 #import "RDB.h"
 #import "NSObject+NSValueCodingWithNil.h"
 #import "RDBObjectJSONProtocol.h"
-#import "objc-runtime.h"
+#import "RDBObject.h"
+#import "NSMutableDictionary+ObjectKeyPath.h"
+#import <objc/runtime.h>
 
 #define HTTP_METHOD_PUT @"PUT"
 #define HTTP_METHOD_GET @"GET"
@@ -19,6 +21,9 @@
 
 #define RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_CODE 400
 #define RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_MESSAGE @"Cannot remove local object. (without _id)"
+
+#define RDB_ERROR_CANNOT_UPDATE_LOCAL_OBJECT_CODE 400
+#define RDB_ERROR_CANNOT_UPDATE_LOCAL_OBJECT_MESSAGE @"Cannot update local object. (without _id)"
 
 @interface RDB ()
 
@@ -198,7 +203,7 @@ static RDB *sharedDB;
             completionBlock(objects, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
         }
         [self releaseNetworkActivity];
-    } failure:[self failureBlockWithObject:type completionBlock:completionBlock methodSelector:@selector(objectsOfClass:withID:withCompletionBlock:)]];
+    } failure:[self failureBlockWithObject:type completionBlock:completionBlock methodSelector:@selector(objectsOfClass:withCompletionBlock:)]];
     [requestOperation start];
 }
 
@@ -245,6 +250,29 @@ static RDB *sharedDB;
     } else {
         if (completionBlock) {
             completionBlock(object, nil, [NSError errorWithDomain:@"local" code:RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_CODE userInfo:@{NSLocalizedDescriptionKey:RDB_ERROR_CANNOT_DELETE_LOCAL_OBJECT_MESSAGE}]);
+        }
+    }
+}
+
+- (void)updateObject:(id<RDBObjectProtocol>)object {
+    [self updateObject:object withCompletionBlock:nil];
+}
+
+- (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock {
+    if (object._id) {
+        NSMutableURLRequest *request = [self requestWithMethod:self.HTTPMethodObjectGet andPath:[self RESTPathOfObjectWithClass:[object class] andObjectID:[object _id]] andParameters:nil];
+        [self retainNetworkActivity];
+        AFJSONRequestOperation *requestOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            [self pathObject:object withDictionary:[self dictionaryRepresentationOfObjectWithClass:[object class] fromResponse:JSON]];
+            if (completionBlock) {
+                completionBlock(object, [self metadataWithJSON:JSON], [self errorWithError:nil andJSON:JSON]);
+            }
+            [self releaseNetworkActivity];
+        } failure:[self failureBlockWithObject:object completionBlock:completionBlock methodSelector:@selector(objectOfClass:withID:withCompletionBlock:)]];
+        [requestOperation start];
+    } else {
+        if (completionBlock) {
+            completionBlock(object, nil, [NSError errorWithDomain:@"local" code:RDB_ERROR_CANNOT_UPDATE_LOCAL_OBJECT_CODE userInfo:@{NSLocalizedDescriptionKey:RDB_ERROR_CANNOT_UPDATE_LOCAL_OBJECT_MESSAGE}]);
         }
     }
 }
@@ -316,7 +344,7 @@ static RDB *sharedDB;
                 return [self JSONValueFromObject:innerObject];
             }];
             if (object) {
-                [dict setObject:object forKey:keypath];
+                [dict setObject:object forKeyPath:keypath];
             }
         }
     }
@@ -381,7 +409,11 @@ static RDB *sharedDB;
 - (id)JSONValueFromObject:(id)value {
     id object = value;
     if ([value conformsToProtocol:@protocol(RDBObjectProtocol)]) {
-        object = [self dictionaryRepresentationOfObject:value];
+        if ([value isRef]) {
+            object = [value _id];
+        } else {
+            object = [self dictionaryRepresentationOfObject:value];
+        }
     } else if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]]) {
         object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
             return [self JSONValueFromObject:innerObject];

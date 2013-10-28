@@ -69,4 +69,8 @@ typedef void (^RDBHTTPRequestFailureBlock)(NSURLRequest *request, NSHTTPURLRespo
 - (void)removeObject:(id<RDBObjectProtocol>)object;
 - (void)removeObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 
+// Re-downloads all data from the DB and patches current object
+- (void)updateObject:(id<RDBObjectProtocol>)object;
+- (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
+
 @end
