@@ -18,7 +18,8 @@
         } else if([value isKindOfClass:[NSString class]]) {
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
             [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-            object = [df dateFromString:value];
+            object = [df dateFromString:[value substringToIndex:18]];
+            object = [object dateByAddingTimeInterval:60*60];
         }
     } else {
         return nil;

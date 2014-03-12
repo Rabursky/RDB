@@ -20,6 +20,9 @@
 // If object is Ref, you can download its content using getWithCompletionBlock
 @property (nonatomic, getter = isRef) BOOL ref;
 
+// if model is embeded in other model, ot may have a parent
+@property (nonatomic, weak) id parent;
+
 // If you want to use another object (or subclass) instead of RDB
 // change object being returned by this method in subclass
 + (RDB*)db;

@@ -73,4 +73,7 @@ typedef void (^RDBHTTPRequestFailureBlock)(NSURLRequest *request, NSHTTPURLRespo
 - (void)updateObject:(id<RDBObjectProtocol>)object;
 - (void)updateObject:(id<RDBObjectProtocol>)object withCompletionBlock:(RDBCompletionBlock)completionBlock;
 
+- (void)retainNetworkActivity;
+- (void)releaseNetworkActivity;
+    
 @end

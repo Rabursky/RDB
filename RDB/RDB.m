@@ -371,7 +371,11 @@ static RDB *sharedDB;
         }
         if (value && property) {
             id object = [self replaceObjectsInObject:value withReplaceBlock:^id(id innerObject) {
-                return [self objectFromJSONValue:innerObject andObjectClass:class];
+                id singleObject = [self objectFromJSONValue:innerObject andObjectClass:class];
+                if ([singleObject respondsToSelector:@selector(setParent:)]) {
+                    [singleObject setParent:instance];
+                }
+                return singleObject;
             }];
             if (object) {
                 [instance setValue:object forKeyPath:property];
