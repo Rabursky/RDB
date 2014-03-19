@@ -20,6 +20,10 @@
     return [RDBObjectRefFactory objectFactoryWithClass:[self class]];
 }
 
++ (void)withCompletionBlock:(RDBCompletionBlock)completionBlock {
+    [self withID:nil withCompletionBlock:completionBlock];
+}
+
 + (void)withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock {
     [[self db] objectOfClass:self withID:objectID withCompletionBlock:completionBlock];
 }

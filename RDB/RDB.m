@@ -311,10 +311,14 @@ static RDB *sharedDB;
 }
 
 - (NSString*)RESTPathOfObjectWithClass:(Class<RDBObjectProtocol>)type andObjectID:(NSString*)objectID {
-    if (self.urlPostfix) {
-        return [NSString stringWithFormat:@"%@%@/%@", self.urlPostfix, [type RESTPath], objectID];
+    if (objectID) {
+        if (self.urlPostfix) {
+            return [NSString stringWithFormat:@"%@%@/%@", self.urlPostfix, [type RESTPath], objectID];
+        }
+        return [NSString stringWithFormat:@"%@/%@", [type RESTPath], objectID];
+    } else {
+        return [self RESTPathOfObjectsWithClass:type];
     }
-    return [NSString stringWithFormat:@"%@/%@", [type RESTPath], objectID];
 }
 
 - (NSArray*)dictionaryRepresentationOfObjectsWithClass:(Class)type fromResponse:(NSDictionary*)JSON {

@@ -34,6 +34,7 @@
 + (Class)classRef;
 
 // Convenient getters
++ (void)withCompletionBlock:(RDBCompletionBlock)completionBlock;
 + (void)withID:(NSString*)objectID withCompletionBlock:(RDBCompletionBlock)completionBlock;
 + (void)allWithCompletionBlock:(RDBCompletionBlock)completionBlock;
 
