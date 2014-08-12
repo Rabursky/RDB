@@ -7,12 +7,22 @@
 //
 
 #import "KLAppDelegate.h"
+#import "KLTask.h"
+#import "RDBRequestModel.h"
+#import "RDBObject+Helpers.h"
+#import "RDBCoreData.h"
+#import "RDBResponse.h"
 
 @implementation KLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [RDB sharedDB].url = [NSURL URLWithString:@"http://localhost:8000"];
+    [RDB sharedDB].coreData = [RDBCoreData sharedInstance];
+    [RDBCoreData sharedInstance].storeFileName = @"kule";
+//    [KLTask withID:@"522e362906aef932e1714df9" withResponseBlock:^(RDBResponse *response) {
+//    }];
     return YES;
 }
 							

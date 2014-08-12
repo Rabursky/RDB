@@ -8,18 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "RDBObject.h"
-#import "NSDate+JSONProtocol.h"
+#import "RDBManagedObject.h"
+//#import "NSDate+JSONProtocol.h"
 
-@interface KLTask : RDBObject
+@interface KLTask : RDBManagedObject
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *author;
 @property (nonatomic, strong) NSDate *date;
 
 + (NSString*)RESTPath;
-+ (NSString*)jsonObjectKeyPath;
-+ (NSString*)jsonObjectsKeyPath;
-+ (NSDictionary*)jsonKeyPathToAttributesMapping;
-+ (RDBObjectCachePolicy)cachePolicy;
 
 @end

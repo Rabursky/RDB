@@ -14,22 +14,4 @@
     return @"tasks";
 }
 
-+ (NSString*)jsonObjectKeyPath {
-    return nil;
-}
-
-+ (NSString*)jsonObjectsKeyPath {
-    return nil;
-}
-
-+ (NSDictionary*)jsonKeyPathToAttributesMapping {
-    return @{@"name":@"name",
-             @"author":@"author",
-             @"date":@"date"};
-}
-
-+ (RDBObjectCachePolicy)cachePolicy {
-    return RDBObjectCachePolicyNoCache;
-}
-
 @end
