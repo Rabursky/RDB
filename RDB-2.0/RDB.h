@@ -62,8 +62,6 @@ typedef id (^RDBReplaceBlock)(id object); // object, metadata, error
 @property (nonatomic, strong) NSString *jsonMetaKeyPath; // no object at keyPath = no meta
 @property (nonatomic, strong) NSString *jsonObjectKeyPath; // keyPath for object at eg /users/id
 @property (nonatomic, strong) NSString *jsonObjectsKeyPath; // keyPath for objects at eg /users
-@property (nonatomic, strong) NSString *jsonResponseCodeKeyPath; // code != 2xx => error
-@property (nonatomic, strong) NSString *jsonErrorMessageKeyPath; // added to NSError along with errorCode
 
 @property (nonatomic) HTTPMethod operationGetMethod; // by default: GET
 @property (nonatomic) HTTPMethod operationUpdateMethod; // by default: PATCH

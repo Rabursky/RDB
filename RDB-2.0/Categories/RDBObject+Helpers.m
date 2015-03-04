@@ -120,7 +120,7 @@
     return dict;
 }
 
-- (void)rdb_pathWithDictionary:(NSDictionary*)dict {
+- (void)rdb_patchWithDictionary:(NSDictionary*)dict {
     NSDictionary *attributes = [(id<RDBObjectProtocol>)self jsonKeyPathToAttributesMapping];
     NSDictionary *classes = [(id<RDBObjectProtocol>)self jsonKeyPathToClassMapping];
     if ([dict.allKeys containsObject:@"_id"]) {

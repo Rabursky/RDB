@@ -58,7 +58,7 @@
 
 // converting to json
 - (NSDictionary *)dictionaryRepresentation;
-- (void)pathWithDictionary:(NSDictionary*)dict;
+- (void)patchWithDictionary:(NSDictionary*)dict;
 
 // kind of delegate methods
 - (void)requestModelWillStartExecuting:(RDBRequestModel *)requestModel;

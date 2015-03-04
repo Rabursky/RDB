@@ -41,7 +41,7 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
-        [self pathWithDictionary:dictionary];
+        [self patchWithDictionary:dictionary];
     }
     return self;
 }
@@ -179,8 +179,8 @@
     return [self rdb_dictionaryRepresentation];
 }
 
-- (void)pathWithDictionary:(NSDictionary*)dict {
-    [self rdb_pathWithDictionary:dict];
+- (void)patchWithDictionary:(NSDictionary*)dict {
+    [self rdb_patchWithDictionary:dict];
 }
 
 - (void)requestModelWillStartExecuting:(RDBRequestModel *)requestModel {

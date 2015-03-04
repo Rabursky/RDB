@@ -40,7 +40,7 @@
         if (self.requestModel.instance) {
             NSString *jsonKeyPath = [self.requestModel.instance jsonObjectKeyPath];
             id object = [self.responseObject valueForKeyPathWithNil:jsonKeyPath];
-            [self.requestModel.instance pathWithDictionary:object];
+            [self.requestModel.instance patchWithDictionary:object];
             self.object = self.requestModel.instance;
         } else {
             NSString *jsonKeyPath = [self.requestModel.type jsonObjectsKeyPath];

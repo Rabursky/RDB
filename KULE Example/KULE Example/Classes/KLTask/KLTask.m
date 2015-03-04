@@ -10,8 +10,6 @@
 
 @implementation KLTask
 
-+ (NSString*)RESTPath {
-    return @"tasks";
-}
++ (NSString*)RESTPath { return @"tasks"; }
 
 @end

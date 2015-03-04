@@ -48,7 +48,7 @@ static RDB *sharedDB;
 
 - (void)setUrlPostfix:(NSString *)urlPostfix {
     if ([urlPostfix characterAtIndex:[urlPostfix length] - 1] == '/') {
-        _urlPostfix = [urlPostfix substringToIndex:[urlPostfix length] - 2];
+        _urlPostfix = [urlPostfix substringToIndex:[urlPostfix length] - 1];
     } else {
         _urlPostfix = urlPostfix;
     }
@@ -75,19 +75,6 @@ static RDB *sharedDB;
     return _jsonObjectKeyPath;
 }
 
-- (NSString*)jsonResponseCodeKeyPath {
-    if (!_jsonResponseCodeKeyPath) {
-        return @"error";
-    }
-    return _jsonResponseCodeKeyPath;
-}
-
-- (NSString*)jsonErrorMessageKeyPath {
-    if (!_jsonErrorMessageKeyPath) {
-        return @"message";
-    }
-    return _jsonErrorMessageKeyPath;
-}
 
 - (AFHTTPSessionManager *)sessionManager {
     @synchronized(self) {

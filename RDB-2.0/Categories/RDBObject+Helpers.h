@@ -27,6 +27,6 @@
 - (void)removeWithResponseBlock:(RDBResponseBlock)responseBlock;
 
 - (NSDictionary*)rdb_dictionaryRepresentation;
-- (void)rdb_pathWithDictionary:(NSDictionary*)dict;
+- (void)rdb_patchWithDictionary:(NSDictionary*)dict;
 
 @end
